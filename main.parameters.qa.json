@@ -1,0 +1,54 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "<azure-region>"
+        },
+        "vnetName": {
+            "value": "<project>-qa-vnet"
+        },
+        "vnetAddressPrefix": {
+            "value": "10.1.0.0/16"
+        },
+        "appIntegrationSubnetPrefix": {
+            "value": "10.1.1.0/24"
+        },
+        "appPrivateEndpointSubnetPrefix": {
+            "value": "10.1.2.0/24"
+        },
+        "privateEndpointSubnetPrefix": {
+            "value": "10.1.3.0/24"
+        },
+        "storageAccountName": {
+            "value": "<project>qasa"
+        },
+        "acrName": {
+            "value": "<project>qaacr"
+        },
+        "cosmosDbAccountName": {
+            "value": "<project>-qa-cosmosdb"
+        },
+        "openAiName": {
+            "value": "<project>-qa-openai"
+        },
+        "searchServiceName": {
+            "value": "<project>-qa-search"
+        },
+        "documentIntelligenceName": {
+            "value": "<project>-qa-docintell"
+        },
+        "appServicePlanName": {
+            "value": "<project>-qa-asp"
+        },
+        "appName": {
+            "value": "<project>-qa-app"
+        },
+        "functionAppServicePlanName": {
+            "value": "<project>-qa-func-asp"
+        },
+        "functionAppName": {
+            "value": "<project>-qa-func"
+        }
+    }
+}
