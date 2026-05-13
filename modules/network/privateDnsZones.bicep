@@ -12,6 +12,7 @@ var dnsZones = [
   'privatelink.blob.${environment().suffixes.storage}' // Blob Storage
   'privatelink.documents.azure.com' // Cosmos DB (SQL API)
   'privatelink.vaultcore.azure.net' // Key Vault
+  'privatelink.cognitiveservices.azure.com' // Document Intelligence
 ]
 
 resource privateDnsZones 'Microsoft.Network/privateDnsZones@2020-06-01' = [
