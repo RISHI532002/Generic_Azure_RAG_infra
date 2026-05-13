@@ -1,1 +1,54 @@
-
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "<azure-region>"
+        },
+        "vnetName": {
+            "value": "<project>-prod-vnet"
+        },
+        "vnetAddressPrefix": {
+            "value": "10.2.0.0/16"
+        },
+        "appIntegrationSubnetPrefix": {
+            "value": "10.2.1.0/24"
+        },
+        "appPrivateEndpointSubnetPrefix": {
+            "value": "10.2.2.0/24"
+        },
+        "privateEndpointSubnetPrefix": {
+            "value": "10.2.3.0/24"
+        },
+        "storageAccountName": {
+            "value": "<project>prodsa"
+        },
+        "acrName": {
+            "value": "<project>prodacr"
+        },
+        "cosmosDbAccountName": {
+            "value": "<project>-prod-cosmosdb"
+        },
+        "openAiName": {
+            "value": "<project>-prod-openai"
+        },
+        "searchServiceName": {
+            "value": "<project>-prod-search"
+        },
+        "documentIntelligenceName": {
+            "value": "<project>-prod-docintell"
+        },
+        "appServicePlanName": {
+            "value": "<project>-prod-asp"
+        },
+        "appName": {
+            "value": "<project>-prod-app"
+        },
+        "functionAppServicePlanName": {
+            "value": "<project>-prod-func-asp"
+        },
+        "functionAppName": {
+            "value": "<project>-prod-func"
+        }
+    }
+}
