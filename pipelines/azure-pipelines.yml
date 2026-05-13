@@ -1,0 +1,98 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: "ubuntu-latest"
+
+variables:
+  serviceConnection: "<service-connection-name>"
+  resourceGroupDev: "<dev-resource-group>"
+  resourceGroupQa: "<qa-resource-group>"
+  resourceGroupProd: "<prod-resource-group>"
+  location: "<azure-region>"
+  templateFile: "main.bicep"
+
+stages:
+  # ---- Stage 1: Deploy to Dev (auto-deploy, no approval) ----
+  - stage: Dev
+    displayName: "Deploy to Dev"
+    jobs:
+      - deployment: DeployDev
+        displayName: "Deploy Infrastructure to Dev"
+        environment: "dev"
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: self
+
+                - task: AzureCLI@2
+                  displayName: "Deploy Bicep to Dev"
+                  inputs:
+                    azureSubscription: $(serviceConnection)
+                    scriptType: "bash"
+                    scriptLocation: "inlineScript"
+                    inlineScript: |
+                      az deployment group create \
+                        --resource-group $(resourceGroupDev) \
+                        --template-file $(templateFile) \
+                        --parameters main.parameters.dev.json \
+                        --name "infra-dev-$(Build.BuildId)"
+
+  # ---- Stage 2: Deploy to QA (requires approval via environment) ----
+  - stage: QA
+    displayName: "Deploy to QA"
+    dependsOn: Dev
+    condition: succeeded()
+    jobs:
+      - deployment: DeployQA
+        displayName: "Deploy Infrastructure to QA"
+        environment: "qa"
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: self
+
+                - task: AzureCLI@2
+                  displayName: "Deploy Bicep to QA"
+                  inputs:
+                    azureSubscription: $(serviceConnection)
+                    scriptType: "bash"
+                    scriptLocation: "inlineScript"
+                    inlineScript: |
+                      az deployment group create \
+                        --resource-group $(resourceGroupQa) \
+                        --template-file $(templateFile) \
+                        --parameters main.parameters.qa.json \
+                        --name "infra-qa-$(Build.BuildId)"
+
+  # ---- Stage 3: Deploy to Prod (requires approval via environment) ----
+  - stage: Prod
+    displayName: "Deploy to Prod"
+    dependsOn: QA
+    condition: succeeded()
+    jobs:
+      - deployment: DeployProd
+        displayName: "Deploy Infrastructure to Prod"
+        environment: "prod"
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: self
+
+                - task: AzureCLI@2
+                  displayName: "Deploy Bicep to Prod"
+                  inputs:
+                    azureSubscription: $(serviceConnection)
+                    scriptType: "bash"
+                    scriptLocation: "inlineScript"
+                    inlineScript: |
+                      az deployment group create \
+                        --resource-group $(resourceGroupProd) \
+                        --template-file $(templateFile) \
+                        --parameters main.parameters.prod.json \
+                        --name "infra-prod-$(Build.BuildId)"
